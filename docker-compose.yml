@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pos_app
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - .:/var/www
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - pos_network
+    depends_on:
+      - db
+
+  webserver:
+    image: nginx:alpine
+    container_name: pos_nginx
+    restart: unless-stopped
+    ports:
+      - "8100:80"
+    volumes:
+      - .:/var/www
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - pos_network
+    depends_on:
+      - app
+
+  db:
+    image: mysql:8.0
+    container_name: pos_mysql
+    restart: unless-stopped
+    ports:
+      - "3308:3306"
+    environment:
+      MYSQL_DATABASE: pos_app
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_USER: pos_user
+      MYSQL_PASSWORD: secret
+    volumes:
+      - pos_mysql_data:/var/lib/mysql
+    networks:
+      - pos_network
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: pos_phpmyadmin
+    restart: unless-stopped
+    ports:
+      - "8101:80"
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: secret
+    networks:
+      - pos_network
+    depends_on:
+      - db
+
+networks:
+  pos_network:
+    driver: bridge
+
+volumes:
+  pos_mysql_data:
+    driver: local
