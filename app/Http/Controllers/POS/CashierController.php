@@ -123,7 +123,7 @@ class CashierController extends Controller
                     $subtotal      += $bundleSubtotal;
                     $lineItems[]    = [
                         'product_id'   => null,
-                        'product_name' => "📦 {$bundle->name} ×{$item['quantity']}",
+                        'product_name' => "{$bundle->name} x{$item['quantity']}",
                         'price'        => (float) $bundle->price,
                         'quantity'     => $item['quantity'],
                         'subtotal'     => $bundleSubtotal,
