@@ -33,6 +33,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::resource('bundles', Admin\BundleController::class)->except(['show']);
 
     Route::get('transactions', [Admin\TransactionController::class, 'index'])->name('transactions.index');
+    Route::get('transactions/export', [Admin\TransactionController::class, 'export'])->name('transactions.export');
     Route::get('transactions/{transaction}', [Admin\TransactionController::class, 'show'])->name('transactions.show');
     Route::delete('transactions/{transaction}', [Admin\TransactionController::class, 'destroy'])->name('transactions.destroy');
 

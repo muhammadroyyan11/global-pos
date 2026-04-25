@@ -178,7 +178,7 @@ class CashierController extends Controller
                 if (empty($line['skip_invoice'])) {
                     TransactionItem::create([
                         'transaction_id' => $transaction->id,
-                        'product_id'     => $line['product_id'] ?? 0,
+                        'product_id'     => $line['product_id'] ?? null,
                         'product_name'   => $line['product_name'],
                         'price'          => $line['price'],
                         'quantity'       => $line['quantity'],
