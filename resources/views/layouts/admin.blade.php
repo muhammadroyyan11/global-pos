@@ -262,6 +262,11 @@
                 <i class="fa-solid fa-user-gear"></i> Pengguna
             </a>
         </div>
+        <div class="menu-item">
+            <a href="{{ route('admin.settings.store.edit') }}" class="{{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">
+                <i class="fa-solid fa-store"></i> Pengaturan Toko
+            </a>
+        </div>
         @endif
     </nav>
 </aside>

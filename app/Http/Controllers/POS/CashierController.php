@@ -199,7 +199,8 @@ class CashierController extends Controller
     public function receipt(Transaction $transaction)
     {
         $transaction->load(['items', 'customer', 'user']);
-        return view('pos.receipt', compact('transaction'));
+        $store = \App\Models\StoreSetting::pluck('value', 'key');
+        return view('pos.receipt', compact('transaction', 'store'));
     }
 
     // ── Helpers ──

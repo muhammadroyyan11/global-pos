@@ -35,4 +35,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('transactions', [Admin\TransactionController::class, 'index'])->name('transactions.index');
     Route::get('transactions/{transaction}', [Admin\TransactionController::class, 'show'])->name('transactions.show');
     Route::delete('transactions/{transaction}', [Admin\TransactionController::class, 'destroy'])->name('transactions.destroy');
+
+    Route::get('settings/store', [Admin\StoreSettingController::class, 'edit'])->name('settings.store.edit');
+    Route::put('settings/store', [Admin\StoreSettingController::class, 'update'])->name('settings.store.update');
 });

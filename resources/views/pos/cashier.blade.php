@@ -166,11 +166,7 @@
             font-size: 1rem; font-weight: 700; color: var(--primary);
             border-top: 2px solid #e0e0e0; padding-top: 8px; margin-top: 4px;
         }
-        .customer-select { margin-bottom: 10px; }
-        .customer-select select {
-            width: 100%; padding: 8px 10px; border: 1px solid #ddd;
-            border-radius: 8px; font-size: .85rem;
-        }
+
         .payment-methods { display: flex; gap: 6px; margin-bottom: 10px; }
         .pay-method {
             flex: 1; padding: 8px 4px; border: 2px solid #ddd; border-radius: 8px;
@@ -314,15 +310,6 @@
                     <input type="number" id="discountInput" value="0" min="0" style="width:100px;padding:2px 6px;border:1px solid #ddd;border-radius:4px;font-size:.8rem;text-align:right;" oninput="updateSummary()">
                 </div>
                 <div class="summary-row total"><span>TOTAL</span><span id="totalDisplay">Rp 0</span></div>
-            </div>
-
-            <div class="customer-select">
-                <select id="customerSelect">
-                    <option value="">-- Pelanggan Umum --</option>
-                    @foreach($customers as $c)
-                    <option value="{{ $c->id }}">{{ $c->name }}</option>
-                    @endforeach
-                </select>
             </div>
 
             <div class="payment-methods">
@@ -504,7 +491,7 @@ async function checkout(){
     const btn=document.getElementById('checkoutBtn');
     btn.disabled=true;btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Memproses...';
     try{
-        const res=await fetch('/pos/checkout',{method:'POST',headers:{'Content-Type':'application/json','X-CSRF-TOKEN':document.querySelector('meta[name="csrf-token"]').content},body:JSON.stringify({items:cart.map(i=>({type:i.type,id:i.id,quantity:i.qty})),customer_id:document.getElementById('customerSelect').value||null,discount:disc,paid_amount:paid,payment_method:paymentMethod})});
+        const res=await fetch('/pos/checkout',{method:'POST',headers:{'Content-Type':'application/json','X-CSRF-TOKEN':document.querySelector('meta[name="csrf-token"]').content},body:JSON.stringify({items:cart.map(i=>({type:i.type,id:i.id,quantity:i.qty})),customer_id:null,discount:disc,paid_amount:paid,payment_method:paymentMethod})});
         const data=await res.json();
         if(data.success){document.getElementById('modalInvoice').textContent=data.transaction.invoice_number;document.getElementById('modalChange').textContent='Rp '+fmt(data.transaction.change_amount);document.getElementById('btnPrintReceipt').href='/pos/receipt/'+data.transaction.id;document.getElementById('successModal').classList.add('show');}
         else alert(data.message||'Terjadi kesalahan.');
@@ -513,7 +500,7 @@ async function checkout(){
 }
 function closeModal(){
     document.getElementById('successModal').classList.remove('show');
-    cart=[];document.getElementById('discountInput').value=0;document.getElementById('paidAmount').value='';document.getElementById('customerSelect').value='';
+    cart=[];document.getElementById('discountInput').value=0;document.getElementById('paidAmount').value='';
     renderCart();loadItems();
 }
 function showLoading(){document.getElementById('productsGrid').innerHTML='<div style="grid-column:1/-1;text-align:center;padding:40px;color:#bbb;"><i class="fa-solid fa-spinner fa-spin" style="font-size:2rem;"></i></div>';}
