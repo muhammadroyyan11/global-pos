@@ -493,7 +493,7 @@ async function checkout(){
     try{
         const res=await fetch('/pos/checkout',{method:'POST',headers:{'Content-Type':'application/json','X-CSRF-TOKEN':document.querySelector('meta[name="csrf-token"]').content},body:JSON.stringify({items:cart.map(i=>({type:i.type,id:i.id,quantity:i.qty})),customer_id:null,discount:disc,paid_amount:paid,payment_method:paymentMethod})});
         const data=await res.json();
-        if(data.success){document.getElementById('modalInvoice').textContent=data.transaction.invoice_number;document.getElementById('modalChange').textContent='Rp '+fmt(data.transaction.change_amount);document.getElementById('btnPrintReceipt').href='/pos/receipt/'+data.transaction.id;document.getElementById('successModal').classList.add('show');}
+        if(data.success){document.getElementById('modalInvoice').textContent=data.transaction.invoice_number;document.getElementById('modalChange').textContent='Rp '+fmt(data.transaction.change_amount);document.getElementById('btnPrintReceipt').href='/pos/receipt/'+data.transaction.id+'?autoprint=1';document.getElementById('successModal').classList.add('show');}
         else alert(data.message||'Terjadi kesalahan.');
     }catch(e){alert('Gagal terhubung ke server.');}
     btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-check-circle"></i> Bayar Sekarang';

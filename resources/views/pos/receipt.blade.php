@@ -87,8 +87,16 @@
 
         @media print {
             body { background: #fff; }
-            .receipt { box-shadow: none; margin: 0; border-radius: 0; width: 100%; padding: 10px; }
+            .receipt {
+                box-shadow: none;
+                margin: 0;
+                border-radius: 0;
+                width: 100%;
+                max-width: 100%;
+                padding: 4px;
+            }
             .btn-print { display: none; }
+            #qrcode img, #qrcode canvas { width: 80px !important; height: 80px !important; }
         }
     </style>
 </head>
@@ -153,7 +161,13 @@
         <div class="sub-msg">Semoga harimu menyenangkan.</div>
         <div class="sub-msg" style="margin-top:4px;">Simpan struk ini sebagai bukti pembelian.</div>
 
-        <div class="barcode-area">
+        <div style="margin:14px auto 0;text-align:center;">
+            <div style="font-size:10px;font-weight:700;color:#555;margin-bottom:6px;">Scan untuk follow Instagram kami</div>
+            <div id="qrcode" style="display:inline-block;padding:6px;background:#fff;border:2px solid #333;border-radius:6px;"></div>
+            <div style="font-size:11px;font-weight:900;color:#e85d04;margin-top:5px;">@jeruklokal.mlg</div>
+        </div>
+
+        <div class="barcode-area" style="margin-top:12px;">
             <div>||||| |||| ||||| |||| |||||</div>
             <div class="barcode-num">{{ $transaction->invoice_number }}</div>
         </div>
@@ -166,5 +180,23 @@
 
         <button class="btn-print" onclick="window.print()">Cetak Struk</button>
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+    new QRCode(document.getElementById('qrcode'), {
+        text: 'https://www.instagram.com/jeruklokal.mlg',
+        width: 100,
+        height: 100,
+        colorDark: '#000000',
+        colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.M
+    });
+
+    // Auto print jika ada ?autoprint=1 di URL
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('autoprint') === '1') {
+        window.onload = () => setTimeout(() => window.print(), 800);
+    }
+</script>
 </body>
 </html>
