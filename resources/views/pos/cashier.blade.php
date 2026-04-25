@@ -165,7 +165,7 @@
 
         /* Cart footer */
         .cart-footer {
-            padding: 12px 16px;
+            padding: 12px 16px 20px 16px;
             border-top: 1px solid #e0e0e0;
             overflow-y: auto;
             flex-shrink: 0;
@@ -211,6 +211,7 @@
             border: none; border-radius: 10px; font-size: 1rem; font-weight: 700;
             cursor: pointer; transition: all .2s; display: flex;
             align-items: center; justify-content: center; gap: 8px;
+            margin-bottom: 8px;
         }
         .btn-checkout:hover { background: var(--primary-dark); }
         .btn-checkout:disabled { background: #ccc; cursor: not-allowed; }
