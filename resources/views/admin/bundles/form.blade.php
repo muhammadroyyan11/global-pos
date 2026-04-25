@@ -150,8 +150,7 @@
                 <div id="previewItems" style="font-size:.78rem;color:#888;margin-bottom:10px;text-align:left;"></div>
                 <div id="previewNormal" style="font-size:.8rem;color:#aaa;text-decoration:line-through;"></div>
                 <div id="previewPrice" style="font-size:1.2rem;font-weight:800;color:#e85d04;">Rp 0</div>
-                <div id="previewSaving" style="font-size:.75rem;color:#28a745;font-weight:600;margin-top:4px;"></div>
-            </div>
+                <div id="previewSaving" style="font-size:.75rem;color:#28a745;font-weight:600;margin-top:4px;"></div>            </div>
         </div>
     </div>
 </div>
@@ -252,7 +251,7 @@ function updatePreview() {
     document.getElementById('previewName').textContent = name;
     document.getElementById('previewPrice').textContent = 'Rp ' + fmt(price);
     document.getElementById('previewNormal').textContent = normalPrice > 0 ? 'Rp ' + fmt(normalPrice) : '';
-    document.getElementById('previewSaving').textContent = saving > 0 ? '🎉 Hemat Rp ' + fmt(saving) : '';
+    document.getElementById('previewSaving').textContent = saving > 0 ? 'Hemat Rp ' + fmt(saving) : '';
     document.getElementById('previewItems').innerHTML = selectedProducts.map(p =>
         `<div>• ${p.name} ×${p.qty}</div>`
     ).join('') || '<div style="color:#bbb;">Belum ada produk</div>';
