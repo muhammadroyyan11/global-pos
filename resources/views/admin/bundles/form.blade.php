@@ -3,7 +3,49 @@
 @section('page-title', isset($bundle) ? 'Edit Bundling' : 'Buat Bundling')
 
 @section('content')
-<div style="display:grid;grid-template-columns:1fr 380px;gap:20px;align-items:start;">
+<style>
+.bundle-grid {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 20px;
+    align-items: start;
+}
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+.product-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    background: #fafafa;
+    border-radius: 8px;
+    margin-bottom: 6px;
+    border: 1px solid #f0f0f0;
+}
+.product-row-info { flex: 1; font-size: .85rem; }
+.product-row-qty { display: flex; align-items: center; gap: 4px; }
+@media (max-width: 768px) {
+    .bundle-grid {
+        grid-template-columns: 1fr;
+    }
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    .preview-sticky {
+        position: static !important;
+    }
+    .product-select-wrap {
+        flex-direction: column;
+    }
+    .product-select-wrap .btn {
+        width: 100%;
+    }
+}
+</style>
+<div class="bundle-grid">
 
     <!-- Form -->
     <div class="card">
@@ -31,7 +73,7 @@
                         placeholder="Deskripsi singkat bundling...">{{ old('description', $bundle->description ?? '') }}</textarea>
                 </div>
 
-                <div class="form-row">
+                <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
                     <div class="form-group">
                         <label class="form-label">Harga Bundling * <small style="color:#888;">(bisa lebih murah dari normal)</small></label>
                         <input type="number" name="price" id="bundlePrice" class="form-control"
@@ -61,7 +103,7 @@
                 <!-- Pilih Produk -->
                 <div class="form-group">
                     <label class="form-label">Tambah Produk ke Bundling *</label>
-                    <div style="display:flex;gap:8px;">
+                    <div class="product-select-wrap" style="display:flex;gap:8px;">
                         <select id="productSelect" class="form-control">
                             <option value="">-- Pilih Produk --</option>
                             @foreach($products as $p)
@@ -97,7 +139,7 @@
     </div>
 
     <!-- Preview -->
-    <div class="card" style="position:sticky;top:80px;">
+    <div class="card preview-sticky" style="position:sticky;top:80px;">
         <div class="card-header">
             <h5><i class="fa-solid fa-eye" style="color:var(--primary);"></i> Preview di POS</h5>
         </div>
@@ -175,24 +217,24 @@ function renderSelected() {
     }
 
     container.innerHTML = selectedProducts.map((p, i) => `
-        <div style="display:flex;align-items:center;gap:8px;padding:8px;background:#fafafa;border-radius:8px;margin-bottom:6px;border:1px solid #f0f0f0;">
+        <div class="product-row">
             <input type="hidden" name="products[]" value="${p.id}">
             <input type="hidden" name="quantities[]" value="${p.qty}">
-            <div style="flex:1;font-size:.85rem;">
+            <div class="product-row-info">
                 <strong>${p.name}</strong>
                 <div style="font-size:.75rem;color:#888;">Rp ${fmt(p.price)} / ${p.unit} | Stok: ${p.stock}</div>
             </div>
-            <div style="display:flex;align-items:center;gap:4px;">
+            <div class="product-row-qty">
                 <button type="button" onclick="changeQty(${p.id}, ${p.qty - 1})"
-                    style="width:24px;height:24px;border-radius:6px;border:1px solid #ddd;background:#fff;cursor:pointer;">−</button>
+                    style="width:28px;height:28px;border-radius:6px;border:1px solid #ddd;background:#fff;cursor:pointer;font-size:1rem;">−</button>
                 <input type="number" value="${p.qty}" min="1"
                     onchange="changeQty(${p.id}, this.value)"
-                    style="width:40px;text-align:center;border:1px solid #ddd;border-radius:6px;padding:2px;font-size:.85rem;">
+                    style="width:44px;text-align:center;border:1px solid #ddd;border-radius:6px;padding:2px;font-size:.85rem;">
                 <button type="button" onclick="changeQty(${p.id}, ${p.qty + 1})"
-                    style="width:24px;height:24px;border-radius:6px;border:1px solid #ddd;background:#fff;cursor:pointer;">+</button>
+                    style="width:28px;height:28px;border-radius:6px;border:1px solid #ddd;background:#fff;cursor:pointer;font-size:1rem;">+</button>
             </div>
             <button type="button" onclick="removeProduct(${p.id})"
-                style="background:none;border:none;color:#dc3545;cursor:pointer;font-size:.9rem;">
+                style="background:none;border:none;color:#dc3545;cursor:pointer;font-size:.9rem;padding:4px;">
                 <i class="fa-solid fa-xmark"></i>
             </button>
         </div>
